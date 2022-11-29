@@ -4,6 +4,8 @@
 set +e
 
 SWARM_IDS=$(docker node ls -q)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export PATH=$PATH:$DIR/bins/
 
 if [ -z "$SWARM_IDS" -o "$SWARM_IDS" == " " ]; then
     echo "No docker swarm nodes exist"

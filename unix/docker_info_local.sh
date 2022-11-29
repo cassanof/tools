@@ -10,12 +10,15 @@ if [ -z "$DOCKER_IDS" -o "$DOCKER_IDS" == " " ]; then
     exit 0
 fi
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export PATH=$PATH:$DIR/bins/
+
 function inspect_ids() {
   for ID in $1
   do
     NAME=$(docker inspect --format="{{.Name}}" $ID)
     IMAGE=$(docker inspect --format="{{.Config.Image}}" $ID)
-    PORTS=$(docker inspect ce0c0cc16372 | jq '.[].NetworkSettings.Ports')
+    PORTS=$(docker inspect $ID | jq '.[].NetworkSettings.Ports')
     STATUS=$(docker inspect --format="{{.State.Status}}" $ID)
     LOGPATH=$(docker inspect --format="{{.LogPath}}" $ID)
     IP=$(docker inspect --format="{{.NetworkSettings.IPAddress}}" $ID)
